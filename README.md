@@ -35,3 +35,104 @@ It also has '=' character which is solely used for padding purpose.
 print "your_string".encode('base64') # encoding string to base64
 print "encoded_string".decode('base64') # decode into normal string
 ```
+## Hashing
+***Hash Function:*** It takes a message of any size as plaintext and gives out a fixed-sized string as ciphertext. The ciphertext, is an alphanumeric string (containing both letters and numerals) and is called a DIGEST.
+
+In this no key is used. It is one way function. Once a message is hashed then it is impossible to get the message back.
+
+Every hash output is unique for different inputs and same for same inputs. Hashing is not an Encryption. It is a fingerprint of a message.
+
+**Tool:** Crack Station.
+## Cipher
+ROT13(ROT13(X)) == X (Substitution Cipher).
+### XOR Encryption
+XOR of two number is done using xor operator(^)
+```python
+>>> 5^9
+12
+```
+XOR of two character 
+when you xor two characters, these are first converted into ascii form and then xored together.
+ord() function is used to convert char to its respective ascii.
+```python
+>>> ord('r')
+114
+>>> ord('j')
+106
+>>> chr(ord('r') ^ ord('j'))
+\x18
+```
+#### Single Byte XOR cipher
+
+```
+                   H         e         l         l         o
+                01001000  01100101  01101100  01101100  01101111    
+              ⊕ 01110011  01110011  01110011  01110011  01110011
+                   s         s         s         s         s
+                ------------------------------------------------
+                00111011  00010110  00011111  00011111  00011100
+                   ;        \x16      \x1f      \x1f      \x1c
+```
+```
+                   ;        \x16      \x1f      \x1f      \x1c
+                00111011  00010110  00011111  00011111  00011100
+              ⊕ 01110011  01110011  01110011  01110011  01110011
+                   s          s         s         s         s
+                ------------------------------------------------
+                01001000  01100101  01101100  01101100  01101111    
+                    H         e         l         l         o
+```
+#### Repeated Key XOR Cipher
+**Message:** Document
+**Key:** abc
+```
+      D         o         c         u         m        e         n         t
+  01000100  01101111  01100011  01110101  01101101  01100101  01101110  01110100    
+⊕ 01100001  01100010  01100011  01100001  01100010  01100011  01100001  01100010
+      a         b         c         a         b        c         a         b
+  ------------------------------------------------------------------------------
+  00100101  00001101  00000000  00010100  00001111  00000110  00001111  00010110
+      %        \r       \x00      \x14      \x0f      \x06      \x0f      \x16
+```
+```
+      %        \r       \x00      \x14      \x0f      \x06      \x0f      \x16
+  00100101  00001101  00000000  00010100  00001111  00000110  00001111  00010110
+⊕ 01100001  01100010  01100011  01100001  01100010  01100011  01100001  01100010
+      a         b         c         a         b        c         a         b
+  ------------------------------------------------------------------------------
+  01000100  01101111  01100011  01110101  01101101  01100101  01101110  01110100    
+      D         o         c         u         m        e         n         t
+```
+**Python Code:**
+```python
+>>> pt = "Document"
+>>> key = "abcabcab"
+>>> "".join(chr(ord(i) ^ ord(j)) for i,j in zip(pt,key))
+'%\r\x00\x14\x0f\x06\x0f\x16'
+>>> ct = '%\r\x00\x14\x0f\x06\x0f\x16'
+>>> "".join(chr(ord(i) ^ ord(j)) for i,j in zip(ct,key))
+'Document'
+```
+
+## RSA - Public Key Crypto System.
+
+It is based on the principle of factorizing large prime numbers.
+
+Now let us see the several steps used for encryption/decryption:
+
+1. Key Generation
+2. Key Distribution
+3. Encryption/Decryption
+
+Variables which are Generally used are:
+1. **p, q**: two large prime numbers
+2. **n**: modulus, n = p * q
+3. **e**: public key exponent
+4. **d**: private key exponent
+5. **M**: unpadded message
+6. **m**: padded message
+7. **c**: cipher text
+8. **φ(n)**: Euler's totient function
+
+### Key Generation
+
