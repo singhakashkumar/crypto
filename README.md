@@ -136,3 +136,41 @@ Variables which are Generally used are:
 
 ### Key Generation
 
+1. Choose two distinct primes p and q. Both the primes must be chosen randomly and must be similar in magnitude. There should be a significant difference in the values of the primes otherwise it will become vulnerable to Fermat's Factorisation and we will see how and why is it so.
+2. Compute n=p∗q
+3. Calculate the value of φ(n)=(p−1)∗(q−1) in this case. 
+4. Choose an integer e such that 1<e<φ(n) and gcd(e,φ(n))=1. e is often selected small and to be in the form of 22i+1 (where i is a positive integer) also known as Fermat Numbers, because it makes exponentiation more efficient. This makes it vulnerable to some attacks in some situations and we will see how we can prevent them.
+5. Compute d as d=e<sup>−1</sup>modφ(n)
+6. The pair (e,n) is known as public key and (d,n) is known as private key.
+
+### Encryption
+
+1. Convert the message into integer form
+2. Computes ciphertext c=m<sup>e</sup>mod n
+3. Now you have the ciphertext c ready to transmit using a reliable channel
+
+### Decryption
+
+1. Computes m=c<sup>d</sup>mod n . How this provides us the message we will see in the next section.
+2. Convert the integer plaintext to the normal form.
+
+### Implementation
+
+```python
+from Crypto.PublicKey import RSA
+from Crypto.Util.number import *
+f=open('PublicKey.pem').read()
+n=RSA.importKey(f).n
+e=RSA.importKey(f).e
+n = p*q
+phin = (p-1)*(q-1)
+d = inverse(e,phin)
+plaintext = pow(ciphertext,d,n)
+```
+
+```python
+>>> bytes_to_long('RSA is cool')
+99525075000367028712206188L
+>>> long_to_bytes(99525075000367028712206188L)
+'RSA is cool'
+```
